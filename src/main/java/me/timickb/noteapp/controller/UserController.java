@@ -5,6 +5,7 @@ import me.timickb.noteapp.exception.EntityNotFoundException;
 import me.timickb.noteapp.model.User;
 import me.timickb.noteapp.model.request.LoginRequest;
 import me.timickb.noteapp.model.request.RegisterRequest;
+import me.timickb.noteapp.model.response.UserResponse;
 import me.timickb.noteapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Iterable<User> getAllUsers() {
+    public Iterable<UserResponse> getAllUsers() {
         return userService.getAll();
     }
 

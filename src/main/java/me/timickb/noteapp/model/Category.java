@@ -11,15 +11,15 @@ import java.util.Set;
 @Entity
 @Data
 public class Category extends EntityBase {
-    private String title;
+    public String title;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    public User user;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore
-    private Set<Note> notes;
+    public Set<Note> notes;
 
     public static Category createFromRequest(CategoryCreateRequest request, User user) {
         Category category = new Category();

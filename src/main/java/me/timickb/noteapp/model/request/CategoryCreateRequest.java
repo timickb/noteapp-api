@@ -6,4 +6,8 @@ import lombok.Data;
 public class CategoryCreateRequest {
     private String title;
     private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
 }

@@ -1,13 +1,19 @@
 package me.timickb.noteapp.service;
 
 import me.timickb.noteapp.exception.EntityNotFoundException;
+import me.timickb.noteapp.mapper.CategoryMapper;
 import me.timickb.noteapp.model.Category;
 import me.timickb.noteapp.model.User;
 import me.timickb.noteapp.model.request.CategoryCreateRequest;
+import me.timickb.noteapp.model.response.CategoryResponse;
 import me.timickb.noteapp.repository.CategoryRepository;
 import me.timickb.noteapp.repository.UserRepository;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CategoryService {
@@ -34,6 +40,13 @@ public class CategoryService {
         User user = userRepo.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User with such id doesn't exist"));
         return categoryRepo.findAllByUser(user);
+    }
+
+    public Iterable<CategoryResponse> getAllByUserIdAsResponse(Long userId) throws EntityNotFoundException {
+        Iterable<Category> categories = getAllByUserId(userId);
+        return StreamSupport.stream(categories.spliterator(), false)
+                .map(c -> Mappers.getMapper(CategoryMapper.class).categoryToResponse(c))
+                .collect(Collectors.toList());
     }
 
     public Category create(CategoryCreateRequest request) throws EntityNotFoundException {

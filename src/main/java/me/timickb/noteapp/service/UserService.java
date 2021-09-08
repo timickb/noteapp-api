@@ -2,17 +2,19 @@ package me.timickb.noteapp.service;
 
 import me.timickb.noteapp.exception.LoginException;
 import me.timickb.noteapp.exception.EntityNotFoundException;
-import me.timickb.noteapp.model.Category;
+import me.timickb.noteapp.mapper.UserMapper;
 import me.timickb.noteapp.model.User;
 import me.timickb.noteapp.model.request.LoginRequest;
 import me.timickb.noteapp.model.request.RegisterRequest;
 import me.timickb.noteapp.model.response.UserResponse;
 import me.timickb.noteapp.repository.CategoryRepository;
 import me.timickb.noteapp.repository.UserRepository;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -25,9 +27,10 @@ public class UserService {
         this.categoryRepo = categoryRepo;
     }
 
-    public Iterable<User> getAll() {
-
-        return userRepo.findAll();
+    public Iterable<UserResponse> getAll() {
+        return userRepo.findAll().stream()
+                .map(u -> Mappers.getMapper(UserMapper.class).userToResponse(u))
+                .collect(Collectors.toList());
     }
 
     // TODO: Entity mapping

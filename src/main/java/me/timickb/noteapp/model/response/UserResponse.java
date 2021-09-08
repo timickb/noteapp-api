@@ -7,9 +7,9 @@ import java.util.List;
 
 @Data
 public class UserResponse {
-    private long id;
-    private String login;
-    private String email;
-    private List<CategoryResponse> categories;
+    public long id;
+    public String login;
+    public String email;
+    public List<CategoryResponse> categories;
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class CategoryResponse {
-    private long id;
-    private String title;
-    private List<NoteResponse> notes;
+    public long id;
+    public String title;
+    public List<NoteResponse> notes;
 }

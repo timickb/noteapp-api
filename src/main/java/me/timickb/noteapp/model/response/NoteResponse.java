@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class NoteResponse {
-    private long id;
-    private String text;
-    private String title;
+    public long id;
+    public String text;
+    public String title;
 }
