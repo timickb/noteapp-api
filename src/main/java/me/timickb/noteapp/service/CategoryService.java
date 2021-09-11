@@ -15,17 +15,18 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class CategoryService {
     private CategoryRepository categoryRepo;
     private UserRepository userRepo;
+    private CategoryMapper categoryMapper;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepo, UserRepository userRepo) {
+    public CategoryService(CategoryRepository categoryRepo, UserRepository userRepo, CategoryMapper categoryMapper) {
         this.categoryRepo = categoryRepo;
         this.userRepo = userRepo;
+        this.categoryMapper = categoryMapper;
     }
 
     public Iterable<Category> getAll() {
@@ -52,7 +53,7 @@ public class CategoryService {
             return new ArrayList<>();
         }
         return categories.stream()
-                .map(c -> Mappers.getMapper(CategoryMapper.class).categoryToResponse(c))
+                .map(c -> categoryMapper.categoryToResponse(c))
                 .collect(Collectors.toList());
     }
 
