@@ -12,6 +12,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,15 +38,20 @@ public class CategoryService {
                 () -> new EntityNotFoundException("Category with such id doesn't exist"));
     }
 
-    public Iterable<Category> getAllByUserId(Long userId) throws EntityNotFoundException {
+    public List<Category> getAllByUserId(Long userId) throws EntityNotFoundException {
         User user = userRepo.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User with such id doesn't exist"));
         return categoryRepo.findAllByUser(user);
     }
 
-    public Iterable<CategoryResponse> getAllByUserIdAsResponse(Long userId) throws EntityNotFoundException {
-        Iterable<Category> categories = getAllByUserId(userId);
-        return StreamSupport.stream(categories.spliterator(), false)
+    public List<CategoryResponse> getAllByUserIdAsResponse(Long userId) {
+        List<Category> categories = null;
+        try {
+            categories = getAllByUserId(userId);
+        } catch (EntityNotFoundException e) {
+            return new ArrayList<>();
+        }
+        return categories.stream()
                 .map(c -> Mappers.getMapper(CategoryMapper.class).categoryToResponse(c))
                 .collect(Collectors.toList());
     }

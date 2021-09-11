@@ -20,23 +20,19 @@ import java.util.stream.Collectors;
 public class UserService {
     private UserRepository userRepo;
     private CategoryRepository categoryRepo;
+    private UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepo, CategoryRepository categoryRepo) {
+    public UserService(UserRepository userRepo, CategoryRepository categoryRepo, UserMapper userMapper) {
         this.userRepo = userRepo;
         this.categoryRepo = categoryRepo;
+        this.userMapper = userMapper;
     }
 
     public Iterable<UserResponse> getAll() {
         return userRepo.findAll().stream()
-                .map(u -> Mappers.getMapper(UserMapper.class).userToResponse(u))
+                .map(u -> userMapper.userToResponse(u))
                 .collect(Collectors.toList());
-    }
-
-    // TODO: Entity mapping
-    public Iterable<User> getAllNew() {
-        List<User> rawData = userRepo.findAll();
-        return rawData;
     }
 
     public User getOne(Long id) throws EntityNotFoundException {

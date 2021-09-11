@@ -24,10 +24,6 @@ public class User extends EntityBase {
 
     public String password;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    public Set<Category> categories;
-
     public static User createFromRequest(RegisterRequest request) {
         User user = new User();
         user.setEmail(request.getEmail());

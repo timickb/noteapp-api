@@ -17,9 +17,6 @@ public class Category extends EntityBase {
     @JoinColumn(name = "user_id")
     public User user;
 
-    @OneToMany(mappedBy = "category")
-    @JsonIgnore
-    public Set<Note> notes;
 
     public static Category createFromRequest(CategoryCreateRequest request, User user) {
         Category category = new Category();
